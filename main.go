@@ -10,6 +10,10 @@ import (
 	"time"
 )
 
+type Comma rune
+
+type UseCRLF bool
+
 type Struct struct {
 	Indexes    []int
 	Header     map[int]string
@@ -30,6 +34,16 @@ func WriteTo(w io.Writer, obj interface{}, list ...interface{}) error {
 	}
 
 	wr := gocsv.NewWriter(w)
+
+	for _, l := range list {
+		switch l.(type) {
+		case Comma:
+			wr.Comma = rune(l.(Comma))
+		case UseCRLF:
+			wr.UseCRLF = bool(l.(UseCRLF))
+		}
+	}
+
 	return wr.WriteAll(data)
 }
 

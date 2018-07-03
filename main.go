@@ -144,8 +144,8 @@ func dataStruct(value reflect.Value, index int, list ...interface{}) (Struct, er
 				bl = list[i].(Blacklist)
 			case Header:
 				hd = list[i].(Header)
-			default:
-				return S, errors.New("parameter invalid, only Whitelist, Blacklist and Header are accepted")
+				//default:
+				//return S, errors.New("parameter invalid, only Whitelist, Blacklist and Header are accepted")
 			}
 		}
 	}

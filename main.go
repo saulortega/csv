@@ -114,9 +114,26 @@ func formatRow(value reflect.Value, types map[int]string, index int) map[int]str
 		case "time.Time":
 			M[index-1] = value.Field(i).Interface().(time.Time).Format("2006-01-02 15:04:05")
 		case "null.Time":
-			M[index-1] = value.Field(i).Field(0).Interface().(time.Time).Format("2006-01-02 15:04:05")
+			vld := fmt.Sprintf("%v", value.Field(i).Field(1))
+			if vld == "false" {
+				M[index-1] = ""
+			} else {
+				M[index-1] = value.Field(i).Field(0).Interface().(time.Time).Format("2006-01-02 15:04:05")
+			}
+		case "null.String":
+			vld := fmt.Sprintf("%v", value.Field(i).Field(1))
+			if vld == "false" {
+				M[index-1] = ""
+			} else {
+				M[index-1] = fmt.Sprintf("%v", value.Field(i).Field(0))
+			}
 		case "null.Float64", "null.Float32", "null.Int", "null.Int8", "null.Int16", "null.Int32", "null.Int64", "null.Uint", "null.Uint8", "null.Uint16", "null.Uint32", "null.Uint64", "null.Bool":
-			M[index-1] = fmt.Sprintf("%v", value.Field(i).Field(0))
+			vld := fmt.Sprintf("%v", value.Field(i).Field(1))
+			if vld == "false" {
+				M[index-1] = ""
+			} else {
+				M[index-1] = fmt.Sprintf("%v", value.Field(i).Field(0))
+			}
 		default:
 			M[index-1] = fmt.Sprintf("%v", value.Field(i))
 		}
